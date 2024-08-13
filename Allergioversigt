@@ -1,0 +1,107 @@
+/allergioversigt
+    |-- index.html
+    |-- style.css
+    |-- script.js
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Allergene oversigt - Restaurant Flammen</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Allergene Oversigt</h1>
+    <p>Vælg de allergener, du vil undgå:</p>
+    
+    <form id="allergenForm">
+        <label><input type="checkbox" name="allergen" value="gluten"> Gluten</label>
+        <label><input type="checkbox" name="allergen" value="Mælk"> Mækl</label>
+        <label><input type="checkbox" name="allergen" value="nødder"> Nødder</label>
+        <label><input type="checkbox" name="allergen" value="Soja"> Soja</label>
+        <label><input type="checkbox" name="allergen" value="Sennep"> Sennep</label>
+        <label><input type="checkbox" name="allergen" value="Sesam"> Sesam</label>
+        <label><input type="checkbox" name="allergen" value="Sulfitter"> Sulfitter</label>
+        <label><input type="checkbox" name="allergen" value="Æg"> Æg</label>
+        <label><input type="checkbox" name="allergen" value="Hvidløg"> Hvidløg</label>
+        <label><input type="checkbox" name="allergen" value="Selleri"> Selleri</label>
+        <label><input type="checkbox" name="allergen" value="Fisk"> Fisk</label>
+        <label><input type="checkbox" name="allergen" value="Tomat"> Pinjekerner</label>
+        <label><input type="checkbox" name="allergen" value="Hvede"> Hvede</label>
+        <label><input type="checkbox" name="allergen" value="Lupin"> Lupin</label>
+        <label><input type="checkbox" name="allergen" value="Løg"> Løg</label>
+        <label><input type="checkbox" name="allergen" value="Peanuts"> Peanuts</label>
+    </form>
+    
+    <h2>Retter du kan spise:</h2>
+    <ul id="retterList">
+        <!-- Retter vil blive vist her -->
+    </ul>
+
+    <script src="script.js"></script>
+</body>
+</html>
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+h1 {
+    color: #333;
+}
+
+label {
+    display: block;
+    margin: 5px 0;
+}
+
+#retterList {
+    margin-top: 20px;
+    padding-left: 0;
+    list-style-type: none;
+}
+
+#retterList li {
+    margin: 5px 0;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+// Definer listen over retter og deres allergener
+const retter = [
+    { navn: "Sprød bruschetta med tomatsalsa og tapenade", allergener: ["gluten", "Nødder", "Mælk", "Soya", "Hvidløg"] },
+    { navn: "Cremet og krydret tomatsuppe", allergener: ["Mælk", "Hvidløg", "Selleri", "Tomat"] },
+    { navn: "Hønsesalat med bacon og rugbrød", allergener: ["gluten","Æg"] },
+    { navn: "Spicy tun med citronperler og purløg", allergener: ["Nødder", "Æg", "fisk"] }
+    { navn: "Samosa", allergener: ["Gluten","Soya", "Løg"] },  
+    { navn: "Kryddersmør", allergener: ["Mælk","Hvidløg"] }, 
+    { navn: "Laks, sesambagt", allergener: ["Hvidløg","Fisk", "Sennep", "Sesam"] }, 
+    { navn: "Flammens hjemmelavet kartoffelsalat", allergener: ["Mælk","Sennep", "Æg"] }, 
+    { navn: "Frikadeller", allergener: ["Mælk","Soya", "Hvede"] }, 
+    { navn: "Tarteletter med høns i asparges", allergener: ["Gluten","Mælk"] }, 
+    { navn: "Laksehapser", allergener: ["Gluten","Mælk", "Sennep", "Sesam", "Æg", "Hvidløg", "Fisk"] }, 
+    { navn: "Lurpak smør", allergener: ["Mælk"] }, 
+    { navn: "Tapenade mix", allergener: ["Nødder","Mælk", "Soya", "Sennep", "Seasam", "Sulfitter"] }, 
+    { navn: "Focacciabrød", allergener: ["Gluten",""] }, 
+    { navn: "Grov Baguette", allergener: ["Gluten","Nødder", "Mælk", "Soya", "Sesam", "Æg"] }, 
+    { navn: "Lyst Rustikt Landbrød", allergener: ["Gluten","Nødder", "Mælk", "Soya", "Sesam", "Æg"] }, 
+    { navn: "", allergener: ["",""] }, 
+    { navn: "", allergener: ["",""] }, 
+    { navn: "", allergener: ["",""] }, 
+];
+
+// Funktion til at opdatere listen af retter
+function opdaterRetter() {
+    const valgteAllergener = Array.from(document.querySelectorAll('input[name="allergen"]:checked')).map(el => el.value);
+    
+    const filtreredeRetter = retter.filter(ret => !ret.allergener.some(a => valgteAllergener.includes(a)));
+
+    const retterList = document.getElementById('retterList');
+    retterList.innerHTML = filtreredeRetter.map(ret => `<li>${ret.navn}</li>`).join('');
+}
+
+// Lyt efter ændringer i allergen-valg
+document.getElementById('allergenForm').addEventListener('change', opdaterRetter);
+
+// Initial opdatering af listen
+opdaterRetter();
